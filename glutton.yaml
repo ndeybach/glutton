@@ -1,0 +1,19 @@
+# Glutton configuration file
+
+output:
+  # Pattern for output filenames
+  # Available placeholders:
+  # {name} - Original filename without extension
+  # {ext} - Output file extension
+  # {date} - Current date (YYYY-MM-DD)
+  # {time} - Current time (HHMMSS)
+  default_pattern: "{name}_converted.{ext}"
+  default_extension: "md"
+
+conversion:
+  # Input/output file encoding
+  encoding: "utf-8"
+  
+  # Markdown table format style
+  # Options: github, pipe, grid, simple
+  table_format: "github"
