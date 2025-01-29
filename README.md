@@ -14,20 +14,26 @@ A Python utility for converting various file formats to markdown, using multiple
   - Images
   - Audio (transcription)
   - ZIP archives
+- Multiple conversion backends:
+  - markitdown (default)
+  - docling (optional)
+- Automatic backend fallback
 - Support for both command-line and programmatic usage
 - Flexible output file naming patterns
 - Full UTF-8 support
 - Batch processing capabilities
-- Extensible backend system (currently using markitdown)
 
 ## Installation
 
 ```bash
-# Install the package in development mode
+# Basic installation with markitdown backend
 pip install -e .
 
-# For development dependencies (optional)
-pip install -e ".[dev]"
+# Install with docling backend support
+pip install -e ".[docling]"
+
+# Install all optional dependencies (including development tools)
+pip install -e ".[all]"
 ```
 
 ## Usage
@@ -38,8 +44,14 @@ pip install -e ".[dev]"
 # Show help and available options
 python -m glutton --help
 
-# Basic conversion with default output naming
+# List available backends and their status
+python -m glutton --list-backends
+
+# Basic conversion with default backend
 python -m glutton input.xlsx
+
+# Use specific backend (falls back to others if not compatible)
+python -m glutton input.pdf --backend docling
 
 # Specify output file
 python -m glutton input.xlsx -o output.md
@@ -59,13 +71,19 @@ python -m glutton input.xlsx -c glutton.yaml
 ```python
 from glutton import GluttonConverter
 
-# Single file conversion
+# Single file conversion with default backend
 converter = GluttonConverter()
 result = converter.convert("input.xlsx", output="output.md")
 
+# Use specific backend (falls back to others if not compatible)
+result = converter.convert("input.pdf", output="output.md", backend="docling")
+
 # Batch processing
-results = converter.convert_many(["file1.xlsx", "file2.xlsx"], 
-                               output_pattern="{name}_converted.md")
+results = converter.convert_many(
+    ["file1.xlsx", "file2.pdf"], 
+    output_pattern="{name}_converted.md",
+    backend="docling"  # Optional backend selection
+)
 
 # Access conversion results
 for result in results:
@@ -85,6 +103,15 @@ output:
 conversion:
   encoding: "utf-8"                   # Input/output file encoding
   table_format: "github"              # Markdown table format style
+  default_backend: "markitdown"       # Default conversion backend
+
+  # Backend-specific settings
+  backends:
+    markitdown:
+      supported_formats: [".xlsx", ".xls", ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".html", ".txt", ".zip"]
+    
+    docling:
+      supported_formats: [".pdf", ".doc", ".docx", ".ppt", ".pptx", ".html"]
 ```
 
 ## Output Naming Patterns
@@ -98,7 +125,19 @@ The following placeholders are available for output file naming:
 
 ## Backend System
 
-Glutton currently uses the markitdown library as its primary conversion backend. The architecture is designed to support additional backends in the future, allowing for flexible conversion strategies based on file type and requirements.
+Glutton supports multiple conversion backends:
+
+1. markitdown (default):
+   - Broad format support
+   - Installed by default
+   - Handles Excel, PDF, Word, PowerPoint, HTML, text files, and more
+
+2. docling (optional):
+   - Specialized in document processing
+   - Install with `pip install -e ".[docling]"`
+   - Best for PDF, Word, and PowerPoint files
+
+The backend system features automatic fallback: if a requested backend doesn't support the input file type or isn't installed, Glutton will automatically try other available backends.
 
 ## License
 

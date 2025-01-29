@@ -9,6 +9,24 @@ output:
   # {time} - Current time (HHMMSS)
   default_pattern: "{name}_converted.{ext}"
   default_extension: "md"
+  
+  # Output directory configuration
+  directory:
+    # Mode for determining output directory:
+    # - "input_dir": Use same directory as input file
+    # - "custom_dir": Use specified default_path
+    # - "working_dir": Use current working directory
+    mode: "input_dir"
+    
+    # Default output directory path when mode is "custom_dir"
+    # Can use placeholders:
+    # {home} - User's home directory
+    # {input_dir} - Input file's directory
+    # {date} - Current date (YYYY-MM-DD)
+    default_path: "{home}/converted"
+    
+    # Whether to create output directory if it doesn't exist
+    create_if_missing: true
 
 conversion:
   # Input/output file encoding
@@ -17,3 +35,17 @@ conversion:
   # Markdown table format style
   # Options: github, pipe, grid, simple
   table_format: "github"
+
+  # Default conversion backend
+  # Options: markitdown, docling
+  default_backend: "markitdown"
+
+  # Backend-specific settings
+  backends:
+    markitdown:
+      # Markitdown-specific settings can go here
+      supported_formats: [".xlsx", ".xls", ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".html", ".txt", ".zip"]
+    
+    docling:
+      # Docling-specific settings can go here
+      supported_formats: [".pdf", ".doc", ".docx", ".ppt", ".pptx", ".html"]

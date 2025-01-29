@@ -9,10 +9,16 @@ description = "Convert various file formats to markdown with support for multipl
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
-keywords = ["markdown", "converter", "excel", "pdf", "word", "powerpoint", "html"]
-authors = [
-    { name = "Your Name", email = "your.email@example.com" }
+keywords = [
+    "markdown",
+    "converter",
+    "excel",
+    "pdf",
+    "word",
+    "powerpoint",
+    "html",
 ]
+authors = [{ name = "Your Name", email = "your.email@example.com" }]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -31,15 +37,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = [
-    "pytest>=7.0.0",
-    "black>=23.0.0",
-    "isort>=5.0.0",
-    "mypy>=1.0.0",
+docling = [
+    "docling>=2.17.0", # Add version constraint once available
 ]
+dev = ["pytest>=7.0.0", "black>=23.0.0", "isort>=5.0.0", "mypy>=1.0.0"]
+all = ["glutton[docling,dev]"]
 
 [project.scripts]
-glutton = "glutton.cli:main"
+glutton = "glutton.cli:app"
 
 [tool.black]
 line-length = 88
